@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .container{
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left, .right{
+            position: absolute;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .left{
+            left: 10px;
+        }
+
+        .right{
+            right: 10px;
+        }
+
+        .wrapper{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 1.9s ease;
+
+        }
+
+        .slide{
+            width: 100vw;
+            height: 100vh;
+            background: lightyellow;
+
+        }
+        .imgContainer{
+            height: 100%;
+        }
+        img{
+            height: 80%; 
+            width: 60%; 
+            display: block;
+            margin: 0px auto;  
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left"><img class="left1" src="https://img.icons8.com/material-outlined/24/000000/long-arrow-left.png"/></div>
+        <div class="wrapper">
+            <div class="slide">
+                <div class="imgContainer">
+                    <img src="https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="">
+                </div>
+            </div>
+            <div class="slide">
+                <div class="imgContainer">
+                    <img src="https://www.prada.com/content/dam/pradanux_products/U/UCS/UCS319/1YOTF010O/UCS319_1YOT_F010O_S_182_SLF.png" alt="">
+                </div>
+            </div>
+            <div class="slide">
+                <div class="imgContainer">
+                    <img src="https://media.istockphoto.com/photos/lets-start-a-baby-hair-challenge-picture-id1280349927?b=1&k=20&m=1280349927&s=170667a&w=0&h=mKl5Ja7pmFdfYDbWsCwAyJG351AM-KNGWXyXNQKNLGA=" alt="">
+                </div>
+            </div>
+            <div class="slide">
+                <div class="imgContainer">
+                    <img src="https://media.istockphoto.com/photos/this-one-match-perfect-with-me-picture-id1293366109?b=1&k=20&m=1293366109&s=170667a&w=0&h=2z_h2WlM3291IRKFXrdmtObnCt93rNNdNN6mqvnKD1I=" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="right"><img class="right1" src="https://img.icons8.com/fluency-systems-filled/48/000000/arrow--v2.png"/></div>
+    </div>
+
+    <script>
+        const container = document.querySelector(".container")
+        let slideIndex = 0
+
+        container.addEventListener("click", (e)=>{
+        let slide = slideIndex * (-100)
+        const wrapper = document.querySelector(".wrapper")
+
+      
+           
+            if(e.target.classList.contains("left1")){
+                
+                if(slideIndex > 0){
+                    slideIndex --
+                } else{
+                    slideIndex = 3
+                }
+                console.log(slideIndex)
+            }else if(e.target.classList.contains("right1")){
+                if(slideIndex < 3){
+                    slideIndex++
+                }else {
+                    slideIndex = 0
+                }
+                console.log(slideIndex)
+
+            }
+
+            wrapper.style.transform = `translateX(${slide}vw)`
+        })
+
+        
+    </script>
+</body>
+</html>
