@@ -4,6 +4,7 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
+import { useLocation } from "react-router";
 
 const Container = styled.div``;
 
@@ -153,6 +154,9 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const loc = useLocation()
+
+  console.log(loc)
   return (
     <Container>
       <Navbar />

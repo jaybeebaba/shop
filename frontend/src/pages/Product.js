@@ -1,17 +1,20 @@
 import { Add, Remove } from "@material-ui/icons";
+import { useParams } from "react-router";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import { useState, useEffect } from "react";
+import { publicRequest } from "../requestMethods";
 
 const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-  ${mobile({ padding: "10px", flexDirection:"column" })}
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
 const ImgContainer = styled.div`
@@ -115,49 +118,84 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const params = useParams()
+  const id = params.id
+  const [product, setProduct] = useState({})
+  const [qty, setQty] = useState(1)
+  const [color, setColor] = useState("")
+  const [size, setSize] = useState("")
+
+  useEffect(() => {
+
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get(`products/find/${id}`)
+        setProduct(res.data)
+      } catch (err) {
+
+      }
+    }
+    getProduct()
+  }, [id])
+
+
+  const handleQtyChange = (direction)=>{
+      if(direction === "add"){
+        setQty(qty+1)
+      }else if(direction === "remove"){
+        if(qty === 1){
+          setQty(1)
+        }else{
+          setQty(qty - 1)
+        }
+      }
+  }
+
+  const handleAddToCart = () =>{
+    
+  }
+
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
+          <Title>{product.title}</Title>
           <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
+            {product.desc}
           </Desc>
-          <Price>$ 20</Price>
+          <Price>$ {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
+              {product.color?.map(c => {
+                return <FilterColor color={c} key={c} onClick={()=> setColor(c)}/>
+              })}
+
             </Filter>
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
+              <FilterSize onChange={(e)=> setSize(e.target.value)}>
+                {product.size?.map(c => {
+                  return <FilterSizeOption key={c}>{c}</FilterSizeOption>
+                })}
+
+
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove style={{cursor: "pointer"}} onClick={()=>{handleQtyChange("remove")}} />
+              <Amount>{qty}</Amount>
+              <Add style={{cursor: "pointer"}} onClick={()=>{handleQtyChange("add")}} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleAddToCart}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

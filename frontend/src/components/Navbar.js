@@ -3,6 +3,7 @@ import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import {useSelector} from "react-redux"
 
 const Container = styled.div`
   height: 60px;
@@ -67,9 +68,14 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const cart = useSelector(state=>{
+    return state.cart
+  })
+
+  console.log(cart)
   return (
     <Container>
-      <Wrapper>
+      <Wrapper> 
         <Left>
           <Language>EN</Language>
           <SearchContainer>
@@ -78,7 +84,7 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>LAMA.</Logo>
+          <Logo>SHOP</Logo>
         </Center>
         <Right>
           <MenuItem>REGISTER</MenuItem>
